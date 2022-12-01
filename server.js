@@ -2,7 +2,7 @@ const express = require('express')
 require("dotenv").config();
 const app = express()
 const cors = require("cors");
-port = process.env.PORT || 5000
+port = process.env.PORT || 4000
 var ObjectId = require('mongodb').ObjectId
 
 app.use(cors());
@@ -40,9 +40,10 @@ async function run() {
     })
 
  // Check Admin
-    app.get('/hello/dashboards/login',(req,res)=>{
+    app.get('/users',(req,res)=>{
       const data = req.body;
       console.log(data)
+      res.send(data)
 
     })
 
@@ -64,6 +65,14 @@ async function run() {
       const result = await blogCollections.findOne(query);
       res.send(result);
     });
+  
+
+    app.delete("/blogs/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await blogCollections.deleteOne(query);
+      res.send(result);
+    })
 
   
 // Show Categories 
@@ -75,13 +84,31 @@ app.get('/categories',async (req,res)=>{
 })
 
 
+// Add New Category Form Dashboard 
 
-    // Dashbord Add new post 
+app.post("/categories",async(req,res)=>{
+  const newCategory = req.body;
+  const result = await categories.insertOne(newCategory);
+  res.send(result)
+})
 
-    app.post(("/addnewarticle",(req,res)=>{
-      const data = req.body
-      console.log(data)
-    }))
+
+// Delete a Category From Dashboard
+
+app.delete("/categories/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await categories.deleteOne(query);
+  res.send(result);
+})
+
+
+    // // Dashbord Add new post 
+
+    // app.post(("",(req,res)=>{
+    //   const data = req.body
+    //   console.log(data)
+    // }))
   
   
 
