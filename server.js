@@ -5,8 +5,10 @@ const cors = require("cors");
 port = process.env.PORT || 4000
 var ObjectId = require('mongodb').ObjectId
 
+
 app.use(cors());
 app.use(express.json());
+
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -30,6 +32,20 @@ async function run() {
     const blogCollections = client.db(dbName).collection(blogCollec);
     const usersCollections = client.db(dbName).collection(usersCollec);
     const categories = client.db(dbName).collection(categoryCollection);
+
+
+// Users Routes 
+
+
+app.post("/login", async(req,res)=>{
+  const email = req.body.email;
+  const password = req.body.password;
+  const passCode = req.body.passCode;
+res.send(email,passCode,password)
+
+})
+
+
 
 
 
